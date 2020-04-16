@@ -98,6 +98,7 @@ resource "kubernetes_deployment" "external-dns-deploy" {
             "--registry=txt",
             "--service-publish-ips-type=${var.service_type_ip}",
             "--txt-owner-id=${var.txt_owner_id}"
+            "--annotation-filter=${var.whitelist_annotation}"
           ]
         }
       }

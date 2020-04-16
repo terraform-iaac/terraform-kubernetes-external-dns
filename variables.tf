@@ -16,3 +16,7 @@ variable "namespace_labels" {
   description = "(Optional) Add namespace labels"
   default = {}
 }
+variable "whitelist_annotation" {
+  description = "(Optional) Annotations in yaml for external dns. External dns updates resource with this annotation"
+  default = "external-dns=use"
+}
