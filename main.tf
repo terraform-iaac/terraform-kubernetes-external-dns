@@ -97,7 +97,7 @@ resource "kubernetes_deployment" "external-dns-deploy" {
             "--policy=upsert-only",
             "--registry=txt",
             "--service-publish-ips-type=${var.service_type_ip}",
-            "--txt-owner-id=${var.txt_owner_id}"
+            "--txt-owner-id=${var.txt_owner_id}",
             "--annotation-filter=${var.whitelist_annotation}"
           ]
         }
