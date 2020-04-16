@@ -1,6 +1,17 @@
+resource "kubernetes_namespace" "namespace" {
+  metadata {
+    annotations = {
+      name = local.name
+    }
+    labels = var.namespace_labels
+    name = local.name
+  }
+}
+
 resource "kubernetes_service_account" "exeternal-dns-user" {
   metadata {
     name = local.name
+    namespace = kubernetes_namespace.namespace.id
   }
   automount_service_account_token = true
 }
@@ -8,6 +19,7 @@ resource "kubernetes_service_account" "exeternal-dns-user" {
 resource "kubernetes_secret" "external-dns-user-secret" {
   metadata {
     name = local.name
+    namespace = kubernetes_namespace.namespace.id
   }
 }
 
@@ -44,13 +56,14 @@ resource "kubernetes_cluster_role_binding" "external-dns-binding" {
   subject {
     kind = "ServiceAccount"
     name = kubernetes_service_account.exeternal-dns-user.metadata[0].name
-    namespace = "default"
+    namespace = kubernetes_namespace.namespace.id
   }
 }
 
 resource "kubernetes_deployment" "external-dns-deploy" {
   metadata {
     name = local.name
+    namespace = kubernetes_namespace.namespace.id
     labels = {
       app = local.name
     }
