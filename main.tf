@@ -1,107 +1,66 @@
 resource "kubernetes_namespace" "namespace" {
+  count = var.create_namespace ? 1 : 0
+
   metadata {
     annotations = {
-      name = local.name
+      name      = var.namespace
     }
-    labels = var.namespace_labels
-    name = local.name
+    labels      = var.namespace_labels
+    name        = var.namespace
   }
 }
-
 resource "kubernetes_service_account" "exeternal-dns-user" {
   metadata {
-    name = local.name
-    namespace = kubernetes_namespace.namespace.id
+    name      = var.name
+    namespace = kubernetes_namespace.namespace.0.id
   }
-  automount_service_account_token = true
-}
 
-resource "kubernetes_secret" "external-dns-user-secret" {
-  metadata {
-    name = local.name
-    namespace = kubernetes_namespace.namespace.id
-  }
+  automount_service_account_token = true
 }
 
 resource "kubernetes_cluster_role" "external-dns-role" {
   metadata {
-    name = local.name
+    name       = var.name
   }
   rule {
     api_groups = [""]
-    resources = ["services","endpoints","pods"]
-    verbs = ["get", "watch", "list"]
+    resources  = ["services","endpoints","pods"]
+    verbs      = ["get", "watch", "list"]
   }
   rule {
     api_groups = [""]
-    resources = ["nodes"]
-    verbs = ["get", "watch", "list"]
+    resources  = ["nodes"]
+    verbs      = ["watch", "list"]
   }
   rule {
     api_groups = ["extensions"]
-    resources = ["ingresses"]
-    verbs = ["get", "watch", "list"]
+    resources  = ["ingresses"]
+    verbs      = ["get", "watch", "list"]
   }
 }
 
 resource "kubernetes_cluster_role_binding" "external-dns-binding" {
   metadata {
-    name = "${local.name}-viewer"
+    name       = "${var.name}-viewer"
   }
   role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind = "ClusterRole"
-    name = kubernetes_service_account.exeternal-dns-user.metadata[0].name
+    api_group  = "rbac.authorization.k8s.io"
+    kind       = "ClusterRole"
+    name       = kubernetes_service_account.exeternal-dns-user.metadata[0].name
   }
   subject {
-    kind = "ServiceAccount"
-    name = kubernetes_service_account.exeternal-dns-user.metadata[0].name
-    namespace = kubernetes_namespace.namespace.id
+    kind       = "ServiceAccount"
+    name       = kubernetes_service_account.exeternal-dns-user.metadata[0].name
+    namespace  = kubernetes_namespace.namespace.0.id
   }
 }
 
-resource "kubernetes_deployment" "external-dns-deploy" {
-  metadata {
-    name = local.name
-    namespace = kubernetes_namespace.namespace.id
-    labels = {
-      app = local.name
-    }
-  }
-  spec {
-    selector {
-      match_labels = {
-        app = local.name
-      }
-    }
-    strategy {
-      type = "Recreate"
-    }
-    template {
-      metadata {
-        labels = {
-          app = local.name
-        }
-      }
-      spec {
-        automount_service_account_token = true
-        service_account_name = kubernetes_service_account.exeternal-dns-user.metadata[0].name
-        container {
-          name = local.name
-          image = "cmaster11/external-dns:filter-private-public-service-ip-v0.5.9"
-          args = [
-            "--source=service",
-            "--source=ingress",
-            "--domain-filter=${var.dns}",
-            "--provider=google",
-            "--policy=upsert-only",
-            "--registry=txt",
-            "--service-publish-ips-type=${var.service_type_ip}",
-            "--txt-owner-id=${var.txt_owner_id}",
-            "--annotation-filter=${var.whitelist_annotation}"
-          ]
-        }
-      }
-    }
-  }
+module "deployment" {
+  source = "git::https://github.com/greg-solutions/terraform_k8s_deploy.git?ref=v1.0.3"
+
+  name                   = var.name
+  image                  = "${var.image}:${var.image_tag}"
+  service_account_token  = true
+  service_account_name   = kubernetes_service_account.exeternal-dns-user.metadata[0].name
+  args                   = var.custom_args == [] ? local.args : var.custom_args
 }

@@ -1,6 +1,7 @@
 module "external" {
   source = "../"
-  dns = "example.com"
-  service_type_ip = "private" // optional default private
+
+  dns          = "example.com"
   txt_owner_id = "dns-private" //optional
+  dns_provider = "google"
 }
