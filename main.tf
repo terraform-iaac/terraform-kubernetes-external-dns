@@ -12,7 +12,7 @@ resource "kubernetes_namespace" "namespace" {
 resource "kubernetes_service_account" "exeternal-dns-user" {
   metadata {
     name      = var.name
-    namespace = kubernetes_namespace.namespace.0.id
+    namespace = var.create_namespace ? kubernetes_namespace.namespace.metadata.0.name : var.namespace
   }
 
   automount_service_account_token = true
@@ -51,7 +51,7 @@ resource "kubernetes_cluster_role_binding" "external-dns-binding" {
   subject {
     kind       = "ServiceAccount"
     name       = kubernetes_service_account.exeternal-dns-user.metadata[0].name
-    namespace  = kubernetes_namespace.namespace.0.id
+    namespace  = var.create_namespace ? kubernetes_namespace.namespace.metadata.0.name : var.namespace
   }
 }
 
@@ -59,6 +59,7 @@ module "deployment" {
   source = "git::https://github.com/greg-solutions/terraform_k8s_deploy.git?ref=v1.0.3"
 
   name                   = var.name
+  namespace              = var.create_namespace ? kubernetes_namespace.namespace.metadata.0.name : var.namespace
   image                  = "${var.image}:${var.image_tag}"
   service_account_token  = true
   service_account_name   = kubernetes_service_account.exeternal-dns-user.metadata[0].name
