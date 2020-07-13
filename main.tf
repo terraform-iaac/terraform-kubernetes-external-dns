@@ -63,5 +63,5 @@ module "deployment" {
   image                  = "${var.image}:${var.image_tag}"
   service_account_token  = true
   service_account_name   = kubernetes_service_account.exeternal-dns-user.metadata[0].name
-  args                   = var.custom_args == [] ? local.args : var.custom_args
+  args                   = var.custom_args == [] ? var.custom_args : local.args
 }
