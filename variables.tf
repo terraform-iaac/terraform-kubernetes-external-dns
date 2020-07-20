@@ -67,3 +67,8 @@ variable "dns_provider" {
   description = "(Required) DNS Provider"
   type        = string
 }
+variable "node_selector" {
+  description = "(Optional) Specify node selector for pod"
+  type        = map(string)
+  default     = null
+}
