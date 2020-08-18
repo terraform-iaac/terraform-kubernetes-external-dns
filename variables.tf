@@ -3,12 +3,11 @@ locals {
   args          = concat ([
     "--source=service",
     "--source=ingress",
-    "--domain-filter=${var.dns}",
     "--provider=${var.dns_provider}",
     "--policy=${var.policy}",
     "--registry=txt",
     "--txt-owner-id=${var.txt_owner_id}"
-  ], local.aws_zone_type)
+  ], local.aws_zone_type, formatlist("--domain-filter=%s", var.dns))
 }
 
 variable "name" {
@@ -32,8 +31,8 @@ variable "namespace" {
   default     = "external-dns"
 }
 variable "dns" {
-  type        = string
-  description = "(Required) DNS name: exmaple.com"
+  type        = list(string)
+  description = "(Required) List of DNS names: exmaple.com, test.com"
 }
 variable "txt_owner_id" {
   type        = string
