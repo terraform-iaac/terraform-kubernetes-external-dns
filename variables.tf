@@ -7,7 +7,7 @@ locals {
     "--policy=${var.policy}",
     "--registry=txt",
     "--txt-owner-id=${var.txt_owner_id}"
-  ], local.aws_zone_type, formatlist("--domain-filter=%s", var.dns))
+  ], local.aws_zone_type, formatlist("--domain-filter=%s", var.dns), var.additional_args)
 }
 
 variable "name" {
@@ -55,6 +55,11 @@ variable "image_tag" {
 }
 variable "custom_args" {
   description = "(Optional) Replace default args"
+  type        = list(string)
+  default     = []
+}
+variable "additional_args" {
+  description = "(Optional) Add extra args to exist"
   type        = list(string)
   default     = []
 }
