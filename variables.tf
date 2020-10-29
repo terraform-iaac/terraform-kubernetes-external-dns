@@ -1,6 +1,6 @@
 locals {
   aws_zone_type = var.aws_zone_type == null ? [] : ["--aws-zone-type=${var.aws_zone_type}"]
-  args          = concat ([
+  args = concat([
     "--source=service",
     "--source=ingress",
     "--provider=${var.dns_provider}",
@@ -11,22 +11,22 @@ locals {
 }
 
 variable "name" {
-  type = string
+  type        = string
   description = "(Optional) Global name for resources"
   default     = "external-dns"
 }
 variable "aws_zone_type" {
-  type = string
+  type        = string
   description = "(Optional) Only look at public hosted zones (valid values are public, private or no value for both)"
   default     = null
 }
 variable "create_namespace" {
-  type = bool
+  type        = bool
   description = "(Optional) Create namespace?"
   default     = true
 }
 variable "namespace" {
-  type = string
+  type        = string
   description = "(Optional) Namespace name"
   default     = "external-dns"
 }
@@ -75,4 +75,9 @@ variable "node_selector" {
   description = "(Optional) Specify node selector for pod"
   type        = map(string)
   default     = null
+}
+variable "env" {
+  type        = list(object({ name = string, value = string }))
+  description = "(Optional) Add environment variables to pods."
+  default     = []
 }
