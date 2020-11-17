@@ -86,5 +86,5 @@ variable "env" {
 }
 variable "security_context" {
   description = "Secuity context for deployment"
-  defaul      = null
+  default      = null
 }
