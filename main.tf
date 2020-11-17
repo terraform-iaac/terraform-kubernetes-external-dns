@@ -11,8 +11,9 @@ resource "kubernetes_namespace" "namespace" {
 }
 resource "kubernetes_service_account" "exeternal-dns-user" {
   metadata {
-    name      = var.name
-    namespace = var.create_namespace ? kubernetes_namespace.namespace.0.metadata.0.name : var.namespace
+    name        = var.name
+    namespace   = var.create_namespace ? kubernetes_namespace.namespace.0.metadata.0.name : var.namespace
+    annotations = var.service_account_annotations
   }
 
   automount_service_account_token = true

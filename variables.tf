@@ -15,6 +15,9 @@ variable "name" {
   description = "(Optional) Global name for resources"
   default     = "external-dns"
 }
+variable "service_account_annotations" {
+  default = null
+}
 variable "aws_zone_type" {
   type        = string
   description = "(Optional) Only look at public hosted zones (valid values are public, private or no value for both)"
