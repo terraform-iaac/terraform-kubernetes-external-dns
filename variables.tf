@@ -84,3 +84,7 @@ variable "env" {
   description = "(Optional) Add environment variables to pods."
   default     = []
 }
+variable "security_context" {
+  description = "Secuity context for deployment"
+  defaul      = null
+}

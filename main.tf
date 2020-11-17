@@ -67,4 +67,5 @@ module "deployment" {
   args                  = var.custom_args == [] ? var.custom_args : local.args
   node_selector         = var.node_selector
   env                   = var.env
+  security_context      = var.security_context
 }
