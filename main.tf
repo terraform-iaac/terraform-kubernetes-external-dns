@@ -57,7 +57,8 @@ resource "kubernetes_cluster_role_binding" "external-dns-binding" {
 }
 
 module "deployment" {
-  source = "git::https://github.com/greg-solutions/terraform_k8s_deploy.git?ref=v1.0.8"
+  source  = "terraform-iaac/deployment/kubernetes"
+  version = "1.0.12"
 
   name                  = var.name
   namespace             = var.create_namespace ? kubernetes_namespace.namespace.0.metadata.0.name : var.namespace
