@@ -40,7 +40,6 @@ variable "namespace_labels" {
   default     = {}
 }
 variable "service_account_annotations" {
-  type        = string
   description = "Annotation for external-dns Service Account"
   default     = null
 }
