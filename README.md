@@ -34,6 +34,7 @@ AWS: add policy to IAM role with route53 permissions
 | env | Add environment variables to deployment | `list(object({ name = string, value = string }))` | `[]` | no |
 | node_selector | Specify node selector for deployment | `map(string)` | `null` | no |
 | security_context | Security context for deployment | `list` | `[]` | no |
+| resources | Compute Resources required by this container. CPU/RAM requests/limits | <pre>object({<br>    request_cpu    = string - (Optional)<br>    request_memory = string - (Optional)<br>    limit_cpu      = string - (Optional)<br>    limit_memory   = string - (Optional)<br>  })</pre> | n/a | <pre>{ request_memory = "26Mi" }</pre> |
 
 ## Outputs
 

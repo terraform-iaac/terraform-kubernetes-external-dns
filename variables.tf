@@ -74,6 +74,12 @@ variable "node_selector" {
   default     = null
 }
 variable "security_context" {
-  description = "Secuity context for deployment"
+  description = "(Optional) Security context for deployment"
   default     = []
+}
+variable "resources" {
+  description = "(Optional) Compute Resources required by this container. CPU/RAM requests/limits"
+  default     = {
+    request_memory = "27Mi"
+  }
 }

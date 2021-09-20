@@ -58,7 +58,7 @@ resource "kubernetes_cluster_role_binding" "external-dns-binding" {
 
 module "deployment" {
   source  = "terraform-iaac/deployment/kubernetes"
-  version = "1.0.12"
+  version = "1.1.3"
 
   name                  = var.name
   namespace             = var.create_namespace ? kubernetes_namespace.namespace.0.metadata.0.name : var.namespace
@@ -69,4 +69,5 @@ module "deployment" {
   node_selector         = var.node_selector
   env                   = var.env
   security_context      = var.security_context
+  resources             = var.resources
 }
