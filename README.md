@@ -9,8 +9,8 @@ AWS: add policy to IAM role with route53 permissions
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.26 |
-| kubernetes | >= 1.11.1 |
+| terraform | >= 0.14.1 |
+| kubernetes | >= 2.1.0 |
 
 
 ## Inputs
