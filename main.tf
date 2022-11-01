@@ -34,7 +34,7 @@ resource "kubernetes_cluster_role" "external-dns-role" {
     verbs      = ["watch", "list"]
   }
   rule {
-    api_groups = ["extensions"]
+    api_groups = ["networking"]
     resources  = ["ingresses"]
     verbs      = ["get", "watch", "list"]
   }
