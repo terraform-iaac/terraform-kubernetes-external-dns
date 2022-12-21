@@ -1,6 +1,6 @@
 variable "dns" {
   type        = list(string)
-  description = "(Required) List of DNS zones: exmaple.com, test.com"
+  description = "(Required) List of DNS zones: example.com, test.com"
 }
 variable "dns_provider" {
   description = "(Required) DNS Provider"
