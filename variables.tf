@@ -41,6 +41,7 @@ variable "namespace_labels" {
 }
 variable "service_account_annotations" {
   description = "Annotation for external-dns Service Account"
+  type        = map(string)
   default     = null
 }
 variable "image" {
@@ -75,6 +76,7 @@ variable "node_selector" {
 }
 variable "security_context" {
   description = "(Optional) Security context for deployment"
+  type        = list(map(string))
   default     = []
 }
 variable "resources" {
