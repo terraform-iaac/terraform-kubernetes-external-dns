@@ -47,12 +47,12 @@ variable "service_account_annotations" {
 variable "image" {
   description = "(Optional) Docker image"
   type        = string
-  default     = "bitnami/external-dns"
+  default     = "registry.k8s.io/external-dns/external-dns"
 }
 variable "image_tag" {
   description = "(Optional) Docker image tag"
   type        = string
-  default     = "0.13.1"
+  default     = "0.17.0"
 }
 variable "custom_args" {
   description = "(Optional) Replace default args"
