@@ -52,7 +52,7 @@ variable "image" {
 variable "image_tag" {
   description = "(Optional) Docker image tag"
   type        = string
-  default     = "0.13.1"
+  default     = "v0.13.1"
 }
 variable "custom_args" {
   description = "(Optional) Replace default args"
